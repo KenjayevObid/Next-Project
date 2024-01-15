@@ -1,11 +1,22 @@
-import React from 'react'
-import BlogPage from '@/components/Blog/blog'
-const Blog = () => {
-  return (
-    <div className="flex min-h-screen flex-col items-center justify-between p-24">
-        <BlogPage />
-    </div>
-  )
-}
+import React from "react";
+import BlogPage from "@/components/Blog/blog";
 
-export default Blog
+const getData = async () => {
+  const res = await fetch("http://localhost:3000/api/posts");
+  if (!res.ok) {
+    throw new Error('Malumot kelmadi')
+  } 
+  return res.json() 
+}
+const Blog = async() => {
+  const posts = await getData()
+  return (
+    <div className="flex m-auto flex-wrap justify-center ">
+      {posts.map((post) => (
+        <BlogPage post={post} key={post._id} />
+      ))}
+    </div>
+  );
+};
+
+export default Blog;
